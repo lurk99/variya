@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard ARIYA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      padding-top: 80px; /* ruang untuk banner statik */
+    }
+    .card-hover:hover {
+      transform: scale(1.03);
+      transition: 0.3s;
+    }
+    .icon-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .navbar-statistik {
+      background-color: #0d6efd;
+      padding: 0.8rem 2rem;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .banner-left img.logo-kiri {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+      border: 2px solid white;
+    }
+
+    .banner-center {
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    .banner-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .banner-right img.logo-kanan {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+      border: 2px solid white;
+    }
+
+    .banner-right img.logo-kanan:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    .logout-btn {
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 576px) {
+      .navbar-statistik {
+        flex-direction: column;
+        gap: 10px;
+        padding: 1rem;
+      }
+      .banner-center {
+        order: -1;
+      }
+    }
+  </style>
+</head>
+<body onload="checkLogin()">
+
+  <!-- BANNER STATIK -->
+  <div class="navbar-statistik">
+    <div class="banner-left">
+      <img src="https://raw.githubusercontent.com/lurk99/img/main/ariyalogo-lnktre.PNG" alt="Logo ARIYA" class="logo-kiri" />
+    </div>
+    <div class="banner-center">
+      <span>🏠 ARIYA DASHBOARD</span>
+    </div>
+
+
+
+
+
+
+
+
+    <div class="banner-right">
+
+      <a href="https://lurk99.github.io/l/" target="_blank">
+        <img src="https://raw.githubusercontent.com/lurk99/img/main/lurk-inc.PNG" alt="Lurk Logo" class="logo-kanan" />
+      </a>
+
+
+
+<button onclick="logout()" class="btn btn-danger">Log Keluar</button>
+<script>
+  function logout() {
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('role');
+    window.location.href = 'login.html';
+  }
+</script>
+
+
+
+
+
+
+
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <h3 class="mb-4 text-center">Pengurusan Pelawat & Penduduk ARIYA</h3>
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="card card-hover shadow-sm text-center p-4">
+          <div class="icon-circle bg-success mx-auto">
+            📋
+          </div>
+          <h5 class="card-title">Rekod Pelawat</h5>
+          <p class="card-text">Semak dan urus data pelawat yang mendaftar masuk kawasan.</p>
+          <a href="/variya/visitor.html" class="btn btn-outline-success">Lihat Pelawat</a>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="card card-hover shadow-sm text-center p-4">
+          <div class="icon-circle bg-info mx-auto">
+            🏡
+          </div>
+          <h5 class="card-title">Maklumat Penduduk</h5>
+          <p class="card-text">Semak dan kemas kini maklumat penduduk Taman ARIYA.</p>
+          <a href="/variya/records.html" class="btn btn-outline-info">Lihat Penduduk</a>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="card card-hover shadow-sm text-center p-4">
+          <div class="icon-circle bg-warning mx-auto">
+            📈
+          </div>
+          <h5 class="card-title">Statistik & Laporan</h5>
+          <p class="card-text">Lihat statistik keahlian dan kehadiran pelawat secara langsung.</p>
+          <a href="/variya/statistics.html" class="btn btn-outline-warning text-dark">Lihat Statistik</a>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="card card-hover shadow-sm text-center p-4">
+          <div class="icon-circle bg-secondary mx-auto">
+            ⚙️
+          </div>
+          <h5 class="card-title">Tetapan Aplikasi</h5>
+          <p class="card-text">Urus tetapan dan akses aplikasi untuk pelawat & penduduk.</p>
+
+
+
+
+
+<!-- Menu untuk admin sahaja -->
+<li class="admin-only"><a href="/variya/admin.html" class="nav-link">Admin Panel</a></li>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="text-center py-4">
+    <small>© 2025 ARIYA Management System. <br>Lurk Inc.</small>
+  </footer>
+
+ <script>
+  // Redirect jika tidak login
+  if (localStorage.getItem('loggedIn') !== 'true') {
+    window.location.href = 'login.html';
+  }
+
+  const userRole = localStorage.getItem('role');
+
+  // Sembunyikan menu admin jika bukan admin
+  if (userRole !== 'admin') {
+    const adminMenus = document.querySelectorAll('.admin-only');
+    adminMenus.forEach(el => el.style.display = 'none');
+  }
+</script>
+
+
+
+
+
+
+</body>
+</html>

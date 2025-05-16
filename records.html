@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rekod Penduduk ARIYA - Tema Gelap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      padding-top: 1.5rem;
+      padding-bottom: 3rem;
+    }
+    h3 {
+      color: #f1f1f1;
+    }
+    .btn-secondary {
+      background-color: #333;
+      border-color: #444;
+      color: #ddd;
+    }
+    .btn-secondary:hover {
+      background-color: #444;
+      color: white;
+    }
+    .card {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.7);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+      color: #ddd;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 28px rgba(0, 255, 150, 0.6);
+    }
+    .card-body {
+      padding: 1.5rem 1.8rem;
+    }
+    .card-title {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: #a5ffb1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: #c0c0c0;
+    }
+    .info-row svg {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      fill: #4caf50;
+      opacity: 0.8;
+    }
+    .icon-phone svg {
+      fill: #1e90ff;
+    }
+    .icon-email svg {
+      fill: #ff9800;
+    }
+    .icon-home svg {
+      fill: #00bcd4;
+    }
+    .icon-location svg {
+      fill: #ff5722;
+    }
+    .status-active {
+      color: #4caf50;
+      font-weight: 700;
+    }
+    .status-inactive {
+      color: #e53935;
+      font-weight: 700;
+    }
+    .btn-link-custom {
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      border: 1.5px solid #4caf50;
+      background-color: transparent;
+      color: #4caf50;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn-link-custom:hover {
+      background-color: #4caf50;
+      color: #121212;
+      text-decoration: none;
+    }
+    select.form-select, input.form-control {
+      background-color: #222;
+      border: 1px solid #555;
+      color: #eee;
+    }
+    select.form-select:focus, input.form-control:focus {
+      background-color: #333;
+      border-color: #4caf50;
+      color: #fff;
+      box-shadow: 0 0 8px #4caf50;
+      outline: none;
+    }
+    .btn-primary {
+      background-color: #4caf50;
+      border-color: #4caf50;
+    }
+    .btn-primary:hover {
+      background-color: #45a049;
+      border-color: #45a049;
+    }
+    .btn-success {
+      background-color: #388e3c;
+      border-color: #388e3c;
+    }
+    .btn-success:hover {
+      background-color: #2e7d32;
+      border-color: #2e7d32;
+    }
+    .no-data {
+      text-align: center;
+      color: #777;
+      margin-top: 2rem;
+      font-style: italic;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>📋 Rekod Penduduk ARIYA - Tema Gelap</h3>
+      <a href="dashboard.html" class="btn btn-secondary">← Kembali ke Dashboard</a>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <select id="filterJalan" class="form-select" aria-label="Filter Jalan">
+          <option value="">Pilih Jalan</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Cari Nama, Telefon, Unit, Emel" aria-label="Cari Rekod" />
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary w-100" onclick="filterData()">🔍 Cari</button>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-success w-100" onclick="showAll()">📂 Tunjuk Semua Rekod</button>
+      </div>
+    </div>
+
+    <div class="row" id="cardContainer"></div>
+    <div id="noResult" class="no-data d-none">Tiada rekod dijumpai.</div>
+  </div>
+
+  <script>
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbyR3lFkkKIG1YybSqm099LNekf40DN1KbLaEgPc1JS-7hTEHKwdnKWSLkcW9oF97VXY/exec";
+    let allData = [];
+
+    fetch(SHEET_URL)
+      .then(res => res.json())
+      .then(data => {
+        allData = data;
+        populateJalanOptions(data);
+      })
+      .catch(err => console.error("Gagal fetch data: ", err));
+
+    function populateJalanOptions(data) {
+      const jalanSet = new Set();
+      data.forEach(row => {
+        if (row.JALAN) jalanSet.add(row.JALAN);
+      });
+      const select = document.getElementById("filterJalan");
+      Array.from(jalanSet).sort().forEach(jalan => {
+        const option = document.createElement("option");
+        option.value = jalan;
+        option.textContent = jalan;
+        select.appendChild(option);
+      });
+    }
+
+    function renderCards(data) {
+      const container = document.getElementById("cardContainer");
+      const noResult = document.getElementById("noResult");
+      container.innerHTML = "";
+
+      if (!data.length) {
+        noResult.classList.remove("d-none");
+        return;
+      } else {
+        noResult.classList.add("d-none");
+      }
+
+      data.forEach(row => {
+        const col = document.createElement("div");
+        col.className = "col-md-4 col-lg-3 mb-4";
+
+        let statusClass = 'status-inactive';
+        let statusText = row["STATUS AHLI"] || '-';
+        if(statusText.toLowerCase().includes("aktif")) {
+          statusClass = 'status-active';
+        }
+
+        const card = document.createElement("div");
+        card.className = "card shadow-sm h-100";
+
+        card.innerHTML = `
+          <div class="card-body">
+            <h5 class="card-title" title="${row.NAMA || 'Tanpa Nama'}">${row.NAMA || 'Tanpa Nama'}</h5>
+
+            <div class="info-row icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.134 2 5 5.134 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.866-3.134-7-7-7zm0 9.5c-1.38 0-2.5-1.121-2.5-2.5S10.62 6.5 12 6.5s2.5 1.121 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> <strong>Unit:</strong> ${row.UNIT || '-'}</div>
+            <div class="info-row icon-location"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg> <strong>Jalan:</strong> ${row.JALAN || '-'}</div>
+            <div class="info-row icon-phone"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79a15.466 15.466 0 006.59 6.59l2.2-2.2a1 1 0 011.12-.21c1.21.49 2.53.76 3.88.76a1 1 0 011 1v3.5a1 1 0 01-1 1C10.07 21.5 2.5 13.93 2.5 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.35.26 2.67.76 3.88a1 1 0 01-.21 1.12l-2.2 2.2z"/></svg> <strong>Telefon:</strong> ${row.TELEFON || '-'}</div>
+            <div class="info-row icon-email"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2l-8 5-8-5v-2l8 5 8-5v2z"/></svg> <strong>Emel:</strong> ${row.EMAIL || '-'}</div>
+<div class="info-row"><strong>Status Ahli:</strong> <span class="${statusClass}">${statusText}</span></div>
+<a href="${row.PAUTAN || '#'}" target="_blank" class="btn btn-link-custom mt-2">Lihat Pautan</a>
+</div>
+`;
+    col.appendChild(card);
+    container.appendChild(col);
+  });
+}
+
+function filterData() {
+  const jalan = document.getElementById("filterJalan").value.toLowerCase();
+  const search = document.getElementById("searchInput").value.toLowerCase().trim();
+
+  const filtered = allData.filter(row => {
+    let matchJalan = jalan ? (row.JALAN || '').toLowerCase() === jalan : true;
+
+    let matchSearch = false;
+    if(search === '') {
+      matchSearch = true; // no search text means all
+    } else {
+      // Cari dalam Nama, Telefon, Unit, Emel
+      matchSearch = (row.NAMA || '').toLowerCase().includes(search) ||
+                    (row.TELEFON || '').toLowerCase().includes(search) ||
+                    (row.UNIT || '').toLowerCase().includes(search) ||
+                    (row.EMAIL || '').toLowerCase().includes(search);
+    }
+
+    return matchJalan && matchSearch;
+  });
+
+  renderCards(filtered);
+}
+
+function showAll() {
+  // reset filter and search
+  document.getElementById("filterJalan").value = "";
+  document.getElementById("searchInput").value = "";
+  renderCards(allData);
+}
+</script> </body> </html>
