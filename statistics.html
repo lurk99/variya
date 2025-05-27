@@ -170,6 +170,29 @@
       </div>
     </div>
 
+<!-- carian -->
+<div class="row mb-4">
+  <div class="col-md-6 offset-md-3">
+    <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="🔍 Carian" onkeyup="cariData()" />
+  </div>
+</div>
+
+<!-- carian reslt -->
+<div class="row">
+  <div class="col-12">
+    <h4 class="text-center mt-5">Keputusan Carian</h4>
+    <table class="table table-striped mt-3" id="searchResultsTable" style="display:none;">
+      <thead class="table-light">
+        <tr id="resultsHeader"></tr>
+      </thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+</div>
+
+  
+
+  
     <div class="row g-4">
       <div class="col-md-6 mb-4">
         <canvas id="jalanChart"></canvas>
@@ -218,7 +241,22 @@ fetch(SHEET_URL)
 
       jalanCount[jalan] = (jalanCount[jalan] || 0) + 1;
       jalanSet.add(jalan);
-    });
+
+
+// SIMPAN data asal untuk carian
+let semuaData = data;
+
+// Sediakan header table berdasarkan medan dalam data pertama
+const headerRow = document.getElementById("resultsHeader");
+Object.keys(data[0] || {}).forEach(key => {
+  const th = document.createElement("th");
+  th.textContent = key;
+  headerRow.appendChild(th);
+});
+
+
+
+      
 
     const totalAhliUnitRumah = ahliUnitRumahSet.size;
 
@@ -303,6 +341,47 @@ fetch(SHEET_URL)
       .catch(err => {
         console.error("Gagal dapat data:", err);
       });
+
+// carian data
+function cariData() {
+  const keyword = document.getElementById("searchInput").value.toLowerCase();
+  const resultTable = document.getElementById("searchResultsTable");
+  const tbody = document.getElementById("resultsBody");
+
+  // Kosongkan dahulu isi lama
+  tbody.innerHTML = "";
+
+  if (!keyword) {
+    resultTable.style.display = "none";
+    return;
+  }
+
+  const hasil = semuaData.filter(row =>
+    Object.values(row).some(val =>
+      String(val).toLowerCase().includes(keyword)
+    )
+  );
+
+  if (hasil.length === 0) {
+    resultTable.style.display = "none";
+    return;
+  }
+
+  hasil.forEach(row => {
+    const tr = document.createElement("tr");
+    Object.keys(row).forEach(key => {
+      const td = document.createElement("td");
+      td.textContent = row[key] || "";
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  resultTable.style.display = "table";
+}
+
+
+    
   </script>
 </div>
 </body>
