@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <title>Statistik Keahlian</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h2 {
+      font-weight: 700;
+      color: #343a40;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+      height: 150px; /* fixed height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    .stat-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #212529;
+    }
+    .stat-value.text-success {
+      color: #198754;
+    }
+    .stat-value.text-danger {
+      color: #dc3545;
+    }
+    .stat-value.text-primary {
+      color: #0d6efd;
+    }
+    /* Optional icons for each card */
+    .stat-title .icon {
+      color: #0d6efd;
+      font-size: 1.3rem;
+    }
+
+
+
+
+.navbar-statistik {
+  background-color: #0d6efd;
+  padding: 1rem 2rem;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-kiri {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  border: 2px solid white;
+}
+
+.logo-kanan {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  border: 2px solid white;
+}
+
+
+.logo-kanan:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+
+
+  </style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container py-5">
+
+
+  <!-- BANNER STATIK -->
+  <div class="navbar-statistik">
+    <div class="banner-left">
+      <img src="https://raw.githubusercontent.com/lurk99/img/main/ariyalogo-lnktre.PNG" alt="Logo ARIYA" class="logo-kiri" />
+    </div>
+    <div class="banner-center">
+      <span>📊 Statistik Keahlian Penduduk</span>
+    </div>
+    <div class="banner-right">
+      
+      <a href="https://lurk99.github.io/l/" target="_blank">
+        <img src="https://raw.githubusercontent.com/lurk99/img/main/lurk-inc.PNG" alt="Lurk Logo" class="logo-kanan" />
+      </a>
+    </div>
+  </div>
+
+
+
+</div>
+<div class="content-wrapper">
+  <div class="text-center mb-4">
+    <a href="dashboard.html" class="btn btn-outline-secondary btn-lg">← Kembali ke Dashboard</a>
+  </div>
+
+
+    <div class="row g-4 justify-content-center mb-5">
+      <div class="col-6 col-md-2">
+        <div class="stat-card">
+          <div class="stat-title"><i class="fas fa-home icon"></i> Unit Rumah</div>
+          <div id="totalHouses" class="stat-value"></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="stat-card">
+          <div class="stat-title"><i class="fas fa-user-check icon"></i> Ahli</div>
+          <div id="totalAhli" class="stat-value text-success"></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="stat-card">
+          <div class="stat-title"><i class="fas fa-user-times icon"></i> Bukan Ahli</div>
+          <div id="totalBukanAhli" class="stat-value text-danger"></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="stat-card">
+          <div class="stat-title"><i class="fas fa-road icon"></i> Jalan</div>
+          <div id="totalJalan" class="stat-value"></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="stat-card">
+          <div class="stat-title"><i class="fas fa-users icon"></i> Ahli Unit Rumah</div>
+          <div id="totalAhliUnit" class="stat-value text-primary"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6 mb-4">
+        <canvas id="jalanChart"></canvas>
+      </div>
+      <div class="col-md-6 mb-4">
+        <canvas id="infoChart"></canvas> <!-- Gantikan fasaChart kepada infoChart -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 offset-md-3 mb-4">
+        <canvas id="ahliPieChart"></canvas>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="dashboard.html" class="btn btn-outline-secondary btn-lg">← Kembali ke Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbyR3lFkkKIG1YybSqm099LNekf40DN1KbLaEgPc1JS-7hTEHKwdnKWSLkcW9oF97VXY/exec";
+
+fetch(SHEET_URL)
+  .then(res => res.json())
+  .then(data => {
+    const rumahSet = new Set();  // Semua unit+jalan unik (untuk kira unit rumah)
+    const ahliUnitRumahSet = new Set(); // Unit+jalan dengan ahli aktif
+    let totalAhli = 0;
+    let totalBukanAhli = 0;
+    const jalanCount = {};
+    const jalanSet = new Set();
+
+    data.forEach(row => {
+      const unit = (row.UNIT || "").trim();
+      const jalan = (row.JALAN || "").trim();
+      const unitJalanKey = `${unit}|${jalan}`;
+      rumahSet.add(unitJalanKey);
+
+      if (row["STATUS AHLI"] === "Aktif") {
+        totalAhli++;
+        ahliUnitRumahSet.add(unitJalanKey);  // Jika ada ahli aktif di unit+jalan ini, tambah ke set
+      } else {
+        totalBukanAhli++;
+      }
+
+      jalanCount[jalan] = (jalanCount[jalan] || 0) + 1;
+      jalanSet.add(jalan);
+    });
+
+    const totalAhliUnitRumah = ahliUnitRumahSet.size;
+
+        // Tunjukkan nilai dalam kad
+        document.getElementById("totalHouses").textContent = rumahSet.size;
+        document.getElementById("totalAhli").textContent = totalAhli;
+        document.getElementById("totalBukanAhli").textContent = totalBukanAhli;
+        document.getElementById("totalJalan").textContent = jalanSet.size;
+        document.getElementById("totalAhliUnit").textContent = totalAhliUnitRumah;
+
+        // Carta Jalan
+        new Chart(document.getElementById("jalanChart"), {
+          type: "bar",
+          data: {
+            labels: Object.keys(jalanCount),
+            datasets: [{
+              label: "Bilangan Rumah per Jalan",
+              data: Object.values(jalanCount),
+              backgroundColor: "#0d6efd"
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+
+        // Carta bar baru untuk 4 info sahaja
+        new Chart(document.getElementById("infoChart"), {
+          type: "bar",
+          data: {
+            labels: [
+              "Ahli Unit Rumah",
+              "Unit Rumah",
+              "Ahli",
+              "Bukan Ahli"
+            ],
+            datasets: [{
+              label: "Statistik",
+              data: [
+                totalAhliUnitRumah,
+                rumahSet.size,
+                totalAhli,
+                totalBukanAhli
+              ],
+              backgroundColor: [
+                "#0d6efd",  // Biru untuk Ahli Unit Rumah
+                "#198754",  // Hijau untuk Unit Rumah
+                "#28a745",  // Hijau terang untuk Ahli
+                "#dc3545"   // Merah untuk Bukan Ahli
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { 
+                beginAtZero: true, 
+                stepSize: 1,
+                ticks: {
+                  precision: 0
+                }
+              }
+            }
+          }
+        });
+
+        // Carta Pai Ahli vs Bukan Ahli
+        new Chart(document.getElementById("ahliPieChart"), {
+          type: "pie",
+          data: {
+            labels: ["Ahli", "Bukan Ahli"],
+            datasets: [{
+              data: [totalAhli, totalBukanAhli],
+              backgroundColor: ["#28a745", "#dc3545"]
+            }]
+          }
+        });
+      })
+      .catch(err => {
+        console.error("Gagal dapat data:", err);
+      });
+  </script>
+</div>
+</body>
+</html>
