@@ -66,7 +66,7 @@
 
 
 .navbar-statistik {
-  background-color: #0d6efd;
+  background: linear-gradient(to right, #00c9a7, #007991);
   padding: 1rem 2rem;
   color: white;
   font-size: 1.5rem;
@@ -277,6 +277,14 @@ footer {
   </div>
 
   <script>
+
+  // Redirect jika tidak login
+  if (localStorage.getItem('loggedIn') !== 'true') {
+    window.location.href = 'login.html';
+  }
+
+
+
     const SHEET_URL = "https://script.google.com/macros/s/AKfycbyR3lFkkKIG1YybSqm099LNekf40DN1KbLaEgPc1JS-7hTEHKwdnKWSLkcW9oF97VXY/exec"; // Gantikan XXX dengan URL Web App anda
     let semuaData = [];
 
