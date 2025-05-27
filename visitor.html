@@ -5,6 +5,45 @@
   <title>Pendaftaran Pelawat</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
+  <style>
+
+footer {
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  margin: 30px auto;
+  padding: 10px;
+  background-color: rgba(0, 128, 128, 0.7);
+  border-radius: 10px;
+  max-width: 400px;
+}
+
+/* Footer tetap bawah */
+.fixed-footer {
+  position: fixed;
+  bottom: -25px;
+  height: var(--footer-height, 0px); /* tinggi footer, boleh ubah pakai CSS variable */
+  left: 0;
+  right: 0;
+  height: 2px;
+
+  background: rgba(0, 0, 0, 0.6); /* Hitam dengan opacity */
+  color: white;
+  text-align: center;
+  line-height: 100px;
+  font-size: 11px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+.fixed-footer {
+  height: 2px;
+  line-height: 2px;
+  background: rgba(0, 0, 0, 0.6);
+  /* yang lain kekalkan */
+}
+
+    
+  </style>
 <body class="bg-light">
   <div class="container py-5">
     <h2 class="mb-4">📘 Borang Pendaftaran Pelawat</h2>
@@ -70,6 +109,6 @@
         errorMessage.classList.remove("d-none");
       });
     });
-  </script>
+  </script><footer class="fixed-footer">ARIYA Dashboard System by Lurk &copy; 2025</footer>
 </body>
 </html>
