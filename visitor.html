@@ -42,11 +42,73 @@ footer {
   /* yang lain kekalkan */
 }
 
+
+
+
+.navbar-statistik {
+  background: linear-gradient(to right, #00c9a7, #007991);
+  padding: 1rem 2rem;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-kiri {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  border: 2px solid white;
+}
+
+.logo-kanan {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  border: 2px solid white;
+}
+
+
+.logo-kanan:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
     
   </style>
 <body class="bg-light">
+
+
+
+  <!-- BANNER STATIK -->
+  <div class="navbar-statistik">
+    <div class="banner-left">
+      <img src="https://raw.githubusercontent.com/lurk99/img/main/ariyalogo-lnktre.PNG" alt="Logo ARIYA" class="logo-kiri" />
+    </div>
+    <div class="banner-center">
+      <span>📘 Borang Pendaftaran Pelawat</span>
+    </div>
+    <div class="banner-right">
+      
+      <a href="https://lurk99.github.io/l/" target="_blank">
+        <img src="https://raw.githubusercontent.com/lurk99/img/main/lurk-inc.PNG" alt="Lurk Logo" class="logo-kanan" />
+      </a>
+    </div>
+  </div><br><br><br>
+
+
+
   <div class="container py-5">
-    <h2 class="mb-4">📘 Borang Pendaftaran Pelawat</h2>
+
     <form id="visitorForm">
       <div class="mb-3">
         <label class="form-label">Nama Pelawat</label>
@@ -76,6 +138,13 @@ footer {
   </div>
 
   <script>
+
+  // Redirect jika tidak login
+  if (localStorage.getItem('loggedIn') !== 'true') {
+    window.location.href = 'login.html';
+  }
+
+
     const form = document.getElementById("visitorForm");
     const successMessage = document.getElementById("successMessage");
     const errorMessage = document.getElementById("errorMessage");
