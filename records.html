@@ -135,6 +135,43 @@
       font-style: italic;
       font-size: 1.2rem;
     }
+
+footer {
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  margin: 30px auto;
+  padding: 10px;
+  background-color: rgba(0, 128, 128, 0.7);
+  border-radius: 10px;
+  max-width: 400px;
+}
+
+/* Footer tetap bawah */
+.fixed-footer {
+  position: fixed;
+  bottom: -25px;
+  height: var(--footer-height, 0px); /* tinggi footer, boleh ubah pakai CSS variable */
+  left: 0;
+  right: 0;
+  height: 2px;
+
+  background: rgba(0, 0, 0, 0.6); /* Hitam dengan opacity */
+  color: white;
+  text-align: center;
+  line-height: 100px;
+  font-size: 11px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+.fixed-footer {
+  height: 2px;
+  line-height: 2px;
+  background: rgba(0, 0, 0, 0.6);
+  /* yang lain kekalkan */
+}
+
+    
   </style>
 </head>
 <body>
@@ -263,4 +300,4 @@ function showAll() {
   document.getElementById("searchInput").value = "";
   renderCards(allData);
 }
-</script> </body> </html>
+</script> </body><footer class="fixed-footer">ARIYA Dashboard System by Lurk &copy; 2025</footer></html>
