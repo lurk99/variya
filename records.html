@@ -250,16 +250,22 @@ footer {
  
       <a href="dashboard.html" class="btn btn-secondary">← Kembali ke Dashboard</a>
     </div>
-     <h1><span>📋 Rekod Penduduk ARIYA</span></h1></div><br>
+     <h2><span>📋 Rekod Penduduk ARIYA</span></h2></div><br>
     <div class="row g-3 mb-4">
       <div class="col-md-3">
         <select id="filterJalan" class="form-select" aria-label="Filter Jalan">
           <option value="">Pilih Jalan</option>
         </select>
-      </div>
+      </div><br>
       <div class="col-md-3">
-        <input type="text" id="searchInput" class="form-control" placeholder="Cari Nama, Telefon, Unit, Emel" aria-label="Cari Rekod" />
-      </div>
+
+
+        <input type="text" id="searchInput" class="form-control" 
+       placeholder="Cari Nama, Telefon, Unit, Emel" 
+       aria-label="Cari Rekod"
+       style="color: white; ::placeholder { color: white; opacity: 1; }" />
+        
+      </div><br>
       <div class="col-md-3">
         <button class="btn btn-primary w-100" onclick="filterData()">🔍 Cari</button>
       </div>
