@@ -254,15 +254,23 @@ footer {
 
 
     <div class="row mb-5">
+      
       <div class="col-md-6">
         <canvas id="jalanChart"></canvas>
       </div>
+
+<div class="col-md-6">
+  <canvas id="fasaChart"></canvas>
+</div>
+
+      
       <div class="col-md-6">
         <canvas id="infoChart"></canvas>
       </div>
     </div>
 
     <div class="row mb-4">
+      
       <div class="col-md-6 offset-md-3">
         <canvas id="ahliPieChart"></canvas>
       </div>
@@ -428,6 +436,95 @@ function cariData() {
 }
 
 
+
+
+
+function unitToNumber(unitStr) {
+    const match = unitStr.match(/^(\d+)([A-Z]?)$/);
+    if (!match) return 0;
+    let num = parseInt(match[1]);
+    const suffix = match[2];
+    return suffix ? num + 0.1 : num;
+  }
+
+  function classifyFasa(unit, jalan) {
+    const no = unitToNumber(unit);
+
+    // Fasa 1
+    if (
+      (jalan === "Jalan Aman Serenia 15/5" && no >= 32.1 && no <= 82.1) ||
+      (jalan === "Jalan Aman Serenia 15/6" && no >= 33 && no <= 83) ||
+      (jalan === "Jalan Aman Serenia 15/7" && no >= 32.1 && no <= 61)
+    ) {
+      return "Fasa 1";
+    }
+
+    // Fasa 2
+    if (
+      (jalan === "Jalan Aman Serenia 15/5" && no >= 2 && no <= 32) ||
+      (jalan === "Jalan Aman Serenia 15/6" && no >= 1 && no <= 32.1) ||
+      (jalan === "Jalan Aman Serenia 15/7" && no >= 1 && no <= 33) ||
+      (jalan === "Jalan Aman Serenia 15/8" && no >= 1 && no <= 32.1)
+    ) {
+      return "Fasa 2";
+    }
+
+    // Fasa 3
+    if (
+      (jalan === "Jalan Aman Serenia 15/1" && no >= 1 && no <= 32) ||
+      (jalan === "Jalan Aman Serenia 15/2" && no >= 1 && no <= 35) ||
+      (jalan === "Jalan Aman Serenia 15/3" && no >= 1 && no <= 38) ||
+      (jalan === "Jalan Aman Serenia 15/4" && no >= 2 && no <= 38)
+    ) {
+      return "Fasa 3";
+    }
+
+    // Jika bukan mana-mana fasa, kita abaikan
+    return null;
+  }
+
+  // Inisialisasi fasa count
+  const fasaCount = {
+    "Fasa 1": 0,
+    "Fasa 2": 0,
+    "Fasa 3": 0
+  };
+
+  // Kira jumlah unit per fasa
+  data.forEach(row => {
+    const fasa = classifyFasa(row.UNIT, row.JALAN);
+    if (fasa && fasaCount[fasa] !== undefined) {
+      fasaCount[fasa]++;
+    }
+  });
+
+  // Paparkan carta
+  new Chart(document.getElementById("fasaChart"), {
+    type: "bar",
+    data: {
+      labels: Object.keys(fasaCount),
+      datasets: [{
+        label: "Bilangan Unit Mengikut Fasa",
+        data: Object.values(fasaCount),
+        backgroundColor: ["#198754", "#ffc107", "#0d6efd"]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Pecahan Mengikut Fasa ARIYA"
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 
 
 </script>
